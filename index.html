@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos</title>
+</head>
+<body style="background-image: url(img/fbn.jpg); background-size: cover;">
+    <center>
+        <h1>Batalla Naval</h1>
+        <h4>¿Cuántos jugadores participaran?</h4>
+        <button onclick="unovsb()" style="margin: 20px; background-color: aqua; border-radius: 10px;">1 vs maquina</button>
+        <button onclick="unovsuno()" style="margin: 20px; background-color: aqua; border-radius: 10px; display:none;">1 vs 1</button>   
+        <div id="uvb" style="width: 50%; background-color: rgb(132, 157, 226); margin: 20px; display: none; border: solid 5px blue; border-radius: 20px;">
+            <form action="juego.php?j=1" method="post">
+                <h3>Jugador</h3>
+                <label for="">Nombre del jugador:</label><br><br>
+                <input type="text" name="j1" placeholder="jugador"><br><br>
+                <input type="submit" value="Llenar Tablero »»" style="background-color: rgb(163, 121, 202); height: 30px; width: 150px; "><br><br>
+            </form>
+        </div>
+        <div class="a"></div>
+        <div id="uvu" style="width: 50%; background-color: rgb(173, 132, 226); margin: 20px; display: none; border: solid 5px rgb(0, 247, 255); border-radius: 20px;">
+            <form action="juego.php?j=2" method="post">
+                <h3>Jugador 1</h3>
+                <label for="">Nombre del jugador:</label><br><br>
+                <input type="text" name="j1" placeholder="jugador 1"><br><br>
+                <h3>Jugador 2</h3>
+                <label for="">Nombre del jugador:</label><br><br>
+                <input type="text" name="j2" placeholder="jugador 2"><br><br>
+                <input type="submit" value="Llenar Tablero »»" style="background-color: rgb(163, 121, 202); height: 30px; width: 150px;"><br><br>
+            </form>
+        </div> 
+    </center>
+    <script>
+        var d1=document.getElementById("uvb");
+        var d2=document.getElementById("uvu");
+        var bt1=false;
+        var bt2=false;
+        var a=document.getElementsByClassName("a");
+        function unovsb(){
+            if(bt1==false){
+                d1.style.display="block";
+                d2.style.display="none";
+                bt1=true;
+                bt2=false;
+            }else{
+                bt1=false;
+                d1.style.display="none";
+            }
+        }
+        function unovsuno(){
+            if(bt2==false){
+                d2.style.display="block";
+                d1.style.display="none";
+                bt2=true;
+                bt1=false;
+            }else{
+                bt2=false;
+                d2.style.display="none";
+                d2.style.width
+            }
+        }
+    </script>
+</body>
+</html>
