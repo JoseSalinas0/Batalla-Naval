@@ -1,4 +1,5 @@
 <?php
+//recibir el nombre del jugador
 $j1=$_POST["j1"];
 ?>
 
@@ -12,11 +13,12 @@ $j1=$_POST["j1"];
     <style>
     </style>
 </head>
-<body style="background-image: url(img/fbn1.jpg); background-size: cover;">
+<body style="background-image: url(img/fbn1.jpg); background-size: cover; background-repeat:no-repeat;">
     <center>
         <h1>Ingresar Barcos</h1>
         <h4>Por favor seleccione el barco y pongalo en el tablero</h4>
         <div id="uvb" style="display:none;">
+        <script>//Botones que representan los barcos</script>
         <button id="b1v" style="margin:20px; background-color: aqua;">bote 4 espacios vertical</button>
         <button id="b2v" style="margin:20px; background-color: aqua;">bote 3 espacios vertical</button>
         <button id="b3v" style="margin:20px; background-color: aqua;">bote 2 espacios vertical</button>
@@ -24,10 +26,9 @@ $j1=$_POST["j1"];
         <button id="b1h" style="margin:20px; background-color: aqua;">bote 4 espacios horizontal</button>
         <button id="b2h" style="margin:20px; background-color: aqua;">bote 3 espacios horizontal</button>
         <button id="b3h" style="margin:20px; background-color: aqua;">bote 2 espacios horizontal</button>
-
         </div>
-
         <div id="jug" style="display:none;">
+            <script>//Contenedores para guardar las matrices y mandarlas por php al la siguiente pagina</script>
             <form action="jugar.php?" method="POST">
                 <input type="text" name="m0" id="m0" style="display:none;" value="" readonly="readonly">
                 <input type="text" name="m1" id="m1" style="display:none;" value="" readonly="readonly">
@@ -62,6 +63,7 @@ $j1=$_POST["j1"];
         </div>
     </center>
     <script>
+        //variables
         var j=<?php echo $_GET["j"]?>;
         var d1= document.getElementById("uvb");
         var d2= document.getElementById("uv");
@@ -75,7 +77,6 @@ $j1=$_POST["j1"];
         var b3v= document.getElementById("b3v");
         var jug= document.getElementById("jug");
         document.getElementById("nj").value="<?php echo $j1;?>";
-        
         var v1h=false;
         var v1v=false;
         var v2h=false;
@@ -83,7 +84,9 @@ $j1=$_POST["j1"];
         var v3h=false;
         var v3v=false;
         var v4=false;
-
+        
+        /*botones que representan los barcos, seleccionan el barco, y su posicion horizontal o vertical
+        una vez se ponga el barco en tal direccion, el otro se ocultara*/
         b1h.addEventListener('click', function(){
             if(v1h==false){
                 b1h.style.backgroundColor="red";
@@ -108,8 +111,6 @@ $j1=$_POST["j1"];
                 dire="";
                 v1h=false;
             }
-            console.log(ba);
-            console.log(dire);
         });
         b1v.addEventListener('click', function(){
             if(v1v==false){
@@ -135,8 +136,6 @@ $j1=$_POST["j1"];
                 dire="";
                 v1v=false;
             }
-            console.log(ba);
-            console.log(dire);
         });
         b2h.addEventListener('click', function(){
             if(v2h==false){
@@ -162,8 +161,6 @@ $j1=$_POST["j1"];
                 dire="";
                 v2h=false;
             }
-            console.log(ba);
-            console.log(dire);
         });
         b2v.addEventListener('click', function(){
             if(v2v==false){
@@ -189,8 +186,6 @@ $j1=$_POST["j1"];
                 dire="";
                 v2v=false;
             }
-            console.log(ba);
-            console.log(dire);
         });
         b3h.addEventListener('click', function(){
             if(v3h==false){
@@ -216,8 +211,6 @@ $j1=$_POST["j1"];
                 dire="";
                 v3h=false;
             }
-            console.log(ba);
-            console.log(dire);
         });
         b3v.addEventListener('click', function(){
             if(v3v==false){
@@ -243,8 +236,6 @@ $j1=$_POST["j1"];
                 dire="";
                 v3v=false;
             }
-            console.log(ba);
-            console.log(dire);
         });
         b4.addEventListener('click', function(){
             if(v4==false){
@@ -270,10 +261,9 @@ $j1=$_POST["j1"];
                 dire="";
                 v4=false;
             }
-            console.log(ba);
-            console.log(dire);
         });
 
+        //variables de la matriz del jugador
         var botes=[];
         var lug=[];
         var x1=[];
@@ -281,6 +271,7 @@ $j1=$_POST["j1"];
         var ba=0;
         var dire;
         var matriz =[[],[],[],[],[],[],[],[],[],[]];
+        //llenado de la matriz del jugador con 0 para determinar el mar
         for(let i=0;i<10;i++){
             for(let j=0;j<10;j++){
                 matriz[i][j]=0;
@@ -289,6 +280,7 @@ $j1=$_POST["j1"];
         var k1=0;
         let m=0;
 
+        //variables de la matriz del bot
         var botesb=[];
         var lugb=[];
         var xb=[];
@@ -296,17 +288,18 @@ $j1=$_POST["j1"];
         var bab=0;
         var direb;
         var matrizb =[[],[],[],[],[],[],[],[],[],[]];
+        //llenado de la matriz del bot con 0 para determinar el mar
         for(let i=0;i<10;i++){
             for(let j=0;j<10;j++){
                 matrizb[i][j]=0;
             }
         }
-        console.log(matrizb);
         var kb=0;
         cb=4;
         db=["v","h","v","h","v"];
         bb=[1,2,3,4];
 
+        //creacion del tablero del jugador, creando elementos y asignandoles atributos y estilos
         if(j==1){
             d1.style.display="block";
             var tabla   = document.createElement("table");
@@ -343,6 +336,10 @@ $j1=$_POST["j1"];
             let ndr;
             let l=0;
             let ing;
+
+            /*seleccion de la posicion de lo barcos en x y y con un numeros random,
+            seleccionando la posicion en vertical u horizontal, ademas de comprobar
+            que no exista un barco sobre la posicion*/
             while(cb>0){
                 ing=false;
                 ndr=Math.floor(Math.random() * (3 - 1) + 1);
@@ -350,6 +347,7 @@ $j1=$_POST["j1"];
                 nyr=Math.floor(Math.random() * (9 - 0) + 0);
                 console.log(ndr);
                 if(db[ndr]=="h"){
+                    //si se colocan horizontalmente
                     for(let i=nxr;i<(nxr+bb[l]);i++){
                         if(matrizb[nyr][i]==0){
                             ing=true
@@ -381,6 +379,7 @@ $j1=$_POST["j1"];
                     }else{
                     }
                 }else{
+                    //si se colocan verticalmente
                     for(let i=nyr;i<(nyr+bb[l]);i++){
                         if(matrizb[i][nxr]==0){
                             ing=true
@@ -413,15 +412,19 @@ $j1=$_POST["j1"];
                     }
                 }
             }
+            //Guardar la matriz creada con la poicion de los barcos en los contenedores para despues enviarlos a la siguiente pagina
             for(let a=0;a<10;a++){
                 document.getElementById("mb"+a).value=matrizb[a];
             }
         }
 
         function colocar(x,y,b,d){
+            /*Dependiendo de la posicion de lo barcos en x y y, y la posicion en vertical u horizontal, 
+            se debera comprobar que no exista un barco sobre la posicion*/
             let ing=false;
             if(b!=0){
                 if(d=="h"){
+                    //si se colocan horizontalmente
                     for(let i=x;i<(x+b);i++){
                         if(matriz[y][i]==0){
                             ing=true
@@ -449,6 +452,7 @@ $j1=$_POST["j1"];
                             console.log(y1);
                             console.log(matriz);
                             most(b);
+                            //Guardar la matriz creada con la poicion de los barcos en los contenedores para despues enviarlos a la siguiente pagina
                             for(let a=0;a<10;a++){
                                 document.getElementById("m"+a).value=matriz[a];
                             }
@@ -459,6 +463,7 @@ $j1=$_POST["j1"];
                         alert("Hay un barco en medio");
                     }
                 }else{
+                    //si se colocan verticalmente
                     for(let i=y;i<(y+b);i++){
                         if(matriz[i][x]==0){
                             ing=true
@@ -486,6 +491,7 @@ $j1=$_POST["j1"];
                             console.log(y1);
                             console.log(matriz);
                             most(b);
+                            //Guardar la matriz creada con la poicion de los barcos en los contenedores para despues enviarlos a la siguiente pagina
                             for(let a=0;a<10;a++){
                                 document.getElementById("m"+a).value=matriz[a];
                             }
@@ -498,7 +504,7 @@ $j1=$_POST["j1"];
                 }
             }
         }
-
+        //ocultar los botones de los barcos ya puestos
         function most(b){
             switch(b){
                 case 4:
@@ -522,6 +528,7 @@ $j1=$_POST["j1"];
                     break;
             }
             console.log(m);
+            //mostrar el boton para la siguiente pagina
             if(m==4){
                 jug.style.display="block";
             }

@@ -1,5 +1,7 @@
 <?php
-$j=$_POST["jug"];
+//Recibir el nombre del jugador, y los valores de los contenedores
+//Como los valores estan aconcatenados los separaremos y guardaremos en matricez
+$juga=$_POST["jug"];
 $m0=explode(",",$_POST["m0"]);
 $m1=explode(",",$_POST["m1"]);
 $m2=explode(",",$_POST["m2"]);
@@ -10,8 +12,6 @@ $m6=explode(",",$_POST["m6"]);
 $m7=explode(",",$_POST["m7"]);
 $m8=explode(",",$_POST["m8"]);
 $m9=explode(",",$_POST["m9"]);
-
-
 
 $mb0=explode(",",$_POST["mb0"]);
 $mb1=explode(",",$_POST["mb1"]);
@@ -61,6 +61,7 @@ $mb9=explode(",",$_POST["mb9"]);
         </div>
     </center>
             <script>
+                //cada matriz de php se guadara en un matriz de js para depues construir la matriz dibimencional
                 var m0=[<?php for($i=0;$i<10;$i++){ if($i<9){ echo "'".$m0[$i]."',"; }else{ echo "'".$m0[$i]."'"; }} ?>];
                 var m1=[<?php for($i=0;$i<10;$i++){ if($i<9){ echo "'".$m1[$i]."',"; }else{ echo "'".$m1[$i]."'"; }} ?>];
                 var m2=[<?php for($i=0;$i<10;$i++){ if($i<9){ echo "'".$m2[$i]."',"; }else{ echo "'".$m2[$i]."'"; }} ?>];
@@ -72,7 +73,8 @@ $mb9=explode(",",$_POST["mb9"]);
                 var m8=[<?php for($i=0;$i<10;$i++){ if($i<9){ echo "'".$m8[$i]."',"; }else{ echo "'".$m8[$i]."'"; }} ?>];
                 var m9=[<?php for($i=0;$i<10;$i++){ if($i<9){ echo "'".$m9[$i]."',"; }else{ echo "'".$m9[$i]."'"; }} ?>];
                 var m=[m0,m1,m2,m3,m4,m5,m6,m7,m8,m9];
-                console.log(m);
+                var juga ="<?php echo $juga?>";
+                console.log(juga);
                 var mb0=[<?php for($i=0;$i<10;$i++){ if($i<9){ echo "'".$mb0[$i]."',"; }else{ echo "'".$mb0[$i]."'"; }} ?>];
                 var mb1=[<?php for($i=0;$i<10;$i++){ if($i<9){ echo "'".$mb1[$i]."',"; }else{ echo "'".$mb1[$i]."'"; }} ?>];
                 var mb2=[<?php for($i=0;$i<10;$i++){ if($i<9){ echo "'".$mb2[$i]."',"; }else{ echo "'".$mb2[$i]."'"; }} ?>];
@@ -84,9 +86,12 @@ $mb9=explode(",",$_POST["mb9"]);
                 var mb8=[<?php for($i=0;$i<10;$i++){ if($i<9){ echo "'".$mb8[$i]."',"; }else{ echo "'".$mb8[$i]."'"; }} ?>];
                 var mb9=[<?php for($i=0;$i<10;$i++){ if($i<9){ echo "'".$mb9[$i]."',"; }else{ echo "'".$mb9[$i]."'"; }} ?>];
                 var mb=[mb0,mb1,mb2,mb3,mb4,mb5,mb6,mb7,mb8,mb9];
-                console.log(mb);
                 tirar=true;
+                var barcost=0;
+                var barcostb=0;
+                var continuar=true;
                 alert("Turno del jugador");
+                //Dibujamos la posicion de los barcos en el tablero del jugador
                 for(let i =0;i<10;i++){
                     for(let j=0;j<10;j++){
                         if(m[i][j]==1){
@@ -94,9 +99,7 @@ $mb9=explode(",",$_POST["mb9"]);
                         }
                     }
                 }
-                var barcost=0;
-                var barcostb=0;
-                var continuar=true;
+                //Creamos el tablero del bot y le damos atributos para depues agregarlo en el html
                 var dt=document.getElementById("tb");
                 var tabla   = document.createElement("table");
                 tabla.style.backgroundColor="#132130";
@@ -128,91 +131,88 @@ $mb9=explode(",",$_POST["mb9"]);
                 dt.appendChild(tabla);
                 tabla.setAttribute("border", "2");
                 tabla.setAttribute("id", "j");
-                
                 var t=document.getElementById("t");
-                function agregar(e){
-                }
 
+                //comprobar el disparo y depende de los valores de la matriz este realizara una accion
                 function disparo(x,y){
-                        if(mb[y][x]=="1"){
+                        if(mb[y][x]==1){
                         alert("le has dado a un barco tira de nuevo")
                         console.log("le has dado a un barco")
-                        mb[y][x]=="2";
+                        mb[y][x]=-1;
                         document.getElementById(y+", "+x+",b").style.backgroundColor="red";
                         tirar=true
                         barcost++;
-                    }else if(mb[y][x]=="2"){
+                    }else if(mb[y][x]==-1){
                         console.log("le diste a un mismo sitio")
-                        document.getElementById(y+", "+x+",b").style.backgroundColor="gray";
-                        tirar=false;
-                        mb[y][x]=="2";
+                        tirar=true;
                     }else{
                         console.log("le has dado al mar")
                         document.getElementById(y+", "+x+",b").style.backgroundColor="gray";
                         tirar=false;
-                        mb[y][x]=="2";
+                        mb[y][x]=-1;
                     }
-                    ganar("<?php echo $j; ?>");
+                    comprobarganar("<?php echo $j; ?>");
                     if(tirar!=true){
                         disparobot()
                     }
-
                 }
-
+                
+                //comprobar el disparo  del bot y depende de los valores de la matriz este realizara una accion
                 function disparobot(tb){
                     if(continuar==true){
                         do{
-                        x=Math.floor(Math.random() * (9 - 0) + 0);
-                        y=Math.floor(Math.random() * (9 - 0) + 0);
-                        if(m[y][x]=="1"){
+                        x=Math.floor(Math.random() * (10 - 0) + 0);
+                        y=Math.floor(Math.random() * (10 - 0) + 0);
+                        if(m[y][x]==1){
                             alert("Bot ha dado a un barco tira de nuevo")
                             console.log("Bot ha dado a un barco tira de nuevo")
-                            m[y][x]=="2";
+                            m[y][x]=-1;
                             document.getElementById(y+", "+x+",j").style.backgroundColor="red";
                             tb=true;
                             barcostb++;
-                        }else if(m[y][x]=="2"){
+                            if(barcostb==10){
+                                tb=false;
+                            }
+                        }else if(m[y][x]==-1){
                             console.log("Bot ha dado un mismo sitio")
-                            document.getElementById(y+", "+x+",j").style.backgroundColor="gray";
-                            m[y][x]=="2";
-                            tb=false;
+                            tb=true;
                         }else{
                             console.log("Bot ha dado al mar")
                             document.getElementById(y+", "+x+",j").style.backgroundColor="gray";
-                            m[y][x]=="2";
+                            m[y][x]=-1;
                             tb=false;
                         }
                     }while(tb==true);
-                    ganarb("Bot");
+                    comprobarganar("b");
                     tirar=true;
                     }
                 }
 
-                function ganar(j){
-                    console.log(mb);
-                    if(barcost==10){
-                        alert("El "+j+" ha ganado");
-                        continuar= false;
+                //funcion que comprueba si hay un ganador
+                function comprobarganar(j){
+                    if(j=="b"){
+                        if(barcostb==10){
+                            alert("El bot ha ganado");
+                            continuar= false;
+                            tb=false;
+                        }else{
+                            console.log("Aun hay barcos")
+                            continuar=true;
+                            i=10;
+                            j=10;
+                        }
                     }else{
-                        console.log("Aun hay barcos")
-                        continuar=true;
-                        i=10;
-                        j=10;
+                        if(barcost==10){
+                            alert(juga+" ha ganado");
+                            continuar= false;
+                        }else{
+                            console.log("Aun hay barcos")
+                            continuar=true;
+                            i=10;
+                            j=10;
+                        }
                     }
                 }
-                function ganarb(t){
-                    console.log(m);
-                    if(barcostb==10){
-                        alert("El "+j+" ha ganado");
-                        continuar= false;
-                    }else{
-                        console.log("Aun hay barcos")
-                        continuar=true;
-                        i=10;
-                        j=10;
-                    }
-                }
-
             </script>
 </body>
 </html>

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Datos</title>
 </head>
-<body style="background-image: url(img/fbn.jpg); background-size: cover;">
+<body style="background-image: url(img/fbn.jpg); background-size: cover; background-repeat:no-repeat;">
     <center>
         <h1>Batalla Naval</h1>
         <h4>¿Cuántos jugadores participaran?</h4>
@@ -34,11 +34,14 @@
         </div> 
     </center>
     <script>
+        //variables
         var d1=document.getElementById("uvb");
         var d2=document.getElementById("uvu");
+        var a=document.getElementsByClassName("a");
         var bt1=false;
         var bt2=false;
-        var a=document.getElementsByClassName("a");
+
+        //funcion del boton para mostrar un div con el formulario
         function unovsb(){
             if(bt1==false){
                 d1.style.display="block";
@@ -48,18 +51,6 @@
             }else{
                 bt1=false;
                 d1.style.display="none";
-            }
-        }
-        function unovsuno(){
-            if(bt2==false){
-                d2.style.display="block";
-                d1.style.display="none";
-                bt2=true;
-                bt1=false;
-            }else{
-                bt2=false;
-                d2.style.display="none";
-                d2.style.width
             }
         }
     </script>
